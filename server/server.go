@@ -55,6 +55,12 @@ func NewServer(cfg *config.Config) *Server {
 			c.Response().Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
 			c.Response().Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
+			c.Request().Header.Set("Access-Control-Allow-Origin", "*")
+			c.Request().Header.Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
+			c.Request().Header.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+			fmt.Println("Cors: ", c.Response().Header()["Access-Control-Allow-Origin"])
+
 			if c.Request().Method == "OPTIONS" {
 				return c.NoContent(http.StatusNoContent)
 			}
