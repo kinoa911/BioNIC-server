@@ -12,7 +12,7 @@ type DBConfig struct {
 func LoadDBConfig() DBConfig {
 	return DBConfig{
 		User:     "root",      //os.Getenv("DB_USER"),
-		Password: "password",  //os.Getenv("DB_PASSWORD"),
+		Password: "rootpw",    //os.Getenv("DB_PASSWORD"),
 		Driver:   "mysql",     //os.Getenv("DB_DRIVER"),
 		Name:     "test",      //os.Getenv("DB_NAME"),
 		Host:     "localhost", //os.Getenv("DB_HOST"),

@@ -10,16 +10,28 @@ import (
 )
 
 func ConfigureRoutes(server *s.Server) {
+	handlerRegisterRequest := handlers.NewHandlerRegisterRequest(server)
+	handlerRegisterFinish := handlers.NewHandlerRegisterFinish(server)
+
+	handlerLoginRequest := handlers.NewHandlerLoginRequest(server)
+	handlerLogin := handlers.NewHandlerLogin(server)
+
 	postHandler := handlers.NewPostHandlers(server)
 	authHandler := handlers.NewAuthHandler(server)
-	registerHandler := handlers.NewRegisterHandler(server)
 
 	server.Echo.Use(middleware.Logger())
 
 	server.Echo.GET("/swagger/*", echoSwagger.WrapHandler)
 
-	server.Echo.POST("/login", authHandler.Login)
-	server.Echo.GET("/signup/:user", registerHandler.Register)
+	server.Echo.POST("/register-request/:name", handlerRegisterRequest.RegisterRequest)
+	server.Echo.POST("/register-finish/:name", handlerRegisterFinish.Register)
+
+	server.Echo.POST("/login-request/:name", handlerLoginRequest.LoginRequest)
+	server.Echo.POST("/login-finish/:name", handlerLogin.Login)
+
+	server.Echo.POST("/login-request/:user", authHandler.Login)
+	server.Echo.POST("/login-finish/:user", authHandler.Login)
+
 	server.Echo.POST("/refresh", authHandler.RefreshToken)
 
 	fmt.Println(server.Config.Auth.AccessSecret)

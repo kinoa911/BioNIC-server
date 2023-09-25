@@ -11,7 +11,7 @@ type HTTPConfig struct {
 func LoadHTTPConfig() HTTPConfig {
 	return HTTPConfig{
 		Host:       os.Getenv("HOST"),
-		Port:       "3000", //os.Getenv("PORT"),
+		Port:       "8000", //os.Getenv("PORT"),
 		ExposePort: os.Getenv("EXPOSE_PORT"),
 	}
 }
