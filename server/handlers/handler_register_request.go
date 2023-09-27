@@ -1,13 +1,10 @@
 package handlers
 
 import (
-	m "PockitGolangBoilerplate/middleware"
-	"PockitGolangBoilerplate/responses"
 	s "PockitGolangBoilerplate/server"
 	"fmt"
-	"net/http"
 
-	"github.com/koesie10/webauthn/webauthn"
+	// "github.com/koesie10/webauthn/webauthn"
 	"github.com/labstack/echo/v4"
 )
 
@@ -29,32 +26,39 @@ func NewHandlerRegisterRequest(server *s.Server) *RegisterHandler {
 func (registerHandler *RegisterHandler) RegisterRequest(c echo.Context) error {
 	fmt.Println("Register")
 
-	name := c.Param("name")
-	u, ok := registerHandler.server.Sr.GetUsers()[name]
-	fmt.Println("POST name: , u: ", name, u)
-	if !ok {
-		fmt.Println("POST !ok")
-		u = &s.User{
-			Name:           name,
-			Authenticators: make(map[string]*s.Authenticator),
-		}
-		registerHandler.server.Sr.SetUsers(name, u)
-		// storage.users[name] = u
-	}
+	// user := datastore.GetUser() // Find or create the new user
+	// options, session, err := w.BeginRegistration(user)
+	// handle errors if present
+	// store the sessionData values
+	// JSONResponse(w, options, http.StatusOK) // return the options generated
+	// options.publicKey contain our registration options
 
-	sess := m.SessionFromContext(c)
+	// name := c.Param("name")
+	// u, ok := registerHandler.server.Sr.GetUsers()[name]
+	// fmt.Println("POST name: , u: ", name, u)
+	// if !ok {
+	// 	fmt.Println("POST !ok")
+	// 	u = &s.User{
+	// 		Name:           name,
+	// 		Authenticators: make(map[string]*s.Authenticator),
+	// 	}
+	// 	registerHandler.server.Sr.SetUsers(name, u)
+	// 	// storage.users[name] = u
+	// }
 
-	fmt.Println("POST SessionFromContext: ", sess)
+	// sess := m.SessionFromContext(c)
 
-	r := c.Request()
-	fmt.Println("POST c.Request: ", r)
-	rw := c.Response()
-	fmt.Println("POST c.Response: ", rw)
-	session := webauthn.WrapMap(sess.Values)
-	fmt.Println("POST: ", session)
-	registerHandler.server.WA.StartRegistration(c.Request(), c.Response(), u, webauthn.WrapMap(sess.Values))
+	// fmt.Println("POST SessionFromContext: ", sess)
 
-	fmt.Println("POST StartRegistration")
+	// r := c.Request()
+	// fmt.Println("POST c.Request: ", r)
+	// rw := c.Response()
+	// fmt.Println("POST c.Response: ", rw)
+	// session := webauthn.WrapMap(sess.Values)
+	// fmt.Println("POST: ", session)
+	// registerHandler.server.WA.StartRegistration(c.Request(), c.Response(), u, webauthn.WrapMap(sess.Values))
+
+	// fmt.Println("POST StartRegistration")
 	// return nil
 
 	// user, _ := strconv.Atoi(c.Param("user"))
@@ -82,5 +86,6 @@ func (registerHandler *RegisterHandler) RegisterRequest(c echo.Context) error {
 	// 	return responses.ErrorResponse(c, http.StatusInternalServerError, "Server error")
 	// }
 
-	return responses.MessageResponse(c, http.StatusAccepted, "Request successfully accepted")
+	// return responses.MessageResponse(c, http.StatusAccepted, "Request successfully accepted")
+	return nil
 }

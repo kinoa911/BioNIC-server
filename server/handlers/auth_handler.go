@@ -1,18 +1,9 @@
 package handlers
 
 import (
-	"PockitGolangBoilerplate/models"
-	"PockitGolangBoilerplate/repositories"
-	"PockitGolangBoilerplate/requests"
-	"PockitGolangBoilerplate/responses"
 	s "PockitGolangBoilerplate/server"
-	tokenservice "PockitGolangBoilerplate/services/token"
-	"fmt"
-	"net/http"
 
-	jwtGo "github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthHandler struct {
@@ -35,36 +26,37 @@ func NewAuthHandler(server *s.Server) *AuthHandler {
 // @Failure 401 {object} responses.Error
 // @Router /login [post]
 func (authHandler *AuthHandler) Login(c echo.Context) error {
-	loginRequest := new(requests.LoginRequest)
+	return nil
+	// loginRequest := new(requests.LoginRequest)
 
-	if err := c.Bind(loginRequest); err != nil {
-		return err
-	}
+	// if err := c.Bind(loginRequest); err != nil {
+	// 	return err
+	// }
 
-	if err := loginRequest.Validate(); err != nil {
-		return responses.ErrorResponse(c, http.StatusBadRequest, "Required fields are empty or not valid")
-	}
+	// if err := loginRequest.Validate(); err != nil {
+	// 	return responses.ErrorResponse(c, http.StatusBadRequest, "Required fields are empty or not valid")
+	// }
 
-	user := models.User{}
-	userRepository := repositories.NewUserRepository(authHandler.server.DB)
-	userRepository.GetUserByEmail(&user, loginRequest.Email)
+	// user := models.User{}
+	// userRepository := repositories.NewUserRepository(authHandler.server.DB)
+	// userRepository.GetUserByEmail(&user, loginRequest.Email)
 
-	if user.ID == 0 || (bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginRequest.Password)) != nil) {
-		return responses.ErrorResponse(c, http.StatusUnauthorized, "Invalid credentials")
-	}
+	// if user.ID == 0 || (bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginRequest.Password)) != nil) {
+	// 	return responses.ErrorResponse(c, http.StatusUnauthorized, "Invalid credentials")
+	// }
 
-	tokenService := tokenservice.NewTokenService(authHandler.server.Config)
-	accessToken, exp, err := tokenService.CreateAccessToken(&user)
-	if err != nil {
-		return err
-	}
-	refreshToken, err := tokenService.CreateRefreshToken(&user)
-	if err != nil {
-		return err
-	}
-	res := responses.NewLoginResponse(accessToken, refreshToken, exp)
+	// tokenService := tokenservice.NewTokenService(authHandler.server.Config)
+	// accessToken, exp, err := tokenService.CreateAccessToken(&user)
+	// if err != nil {
+	// 	return err
+	// }
+	// refreshToken, err := tokenService.CreateRefreshToken(&user)
+	// if err != nil {
+	// 	return err
+	// }
+	// res := responses.NewLoginResponse(accessToken, refreshToken, exp)
 
-	return responses.Response(c, http.StatusOK, res)
+	// return responses.Response(c, http.StatusOK, res)
 }
 
 // Refresh godoc
@@ -79,44 +71,45 @@ func (authHandler *AuthHandler) Login(c echo.Context) error {
 // @Failure 401 {object} responses.Error
 // @Router /refresh [post]
 func (authHandler *AuthHandler) RefreshToken(c echo.Context) error {
-	refreshRequest := new(requests.RefreshRequest)
-	if err := c.Bind(refreshRequest); err != nil {
-		return err
-	}
+	return nil
+	// refreshRequest := new(requests.RefreshRequest)
+	// if err := c.Bind(refreshRequest); err != nil {
+	// 	return err
+	// }
 
-	token, err := jwtGo.Parse(refreshRequest.Token, func(token *jwtGo.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwtGo.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(authHandler.server.Config.Auth.RefreshSecret), nil
-	})
+	// token, err := jwtGo.Parse(refreshRequest.Token, func(token *jwtGo.Token) (interface{}, error) {
+	// 	if _, ok := token.Method.(*jwtGo.SigningMethodHMAC); !ok {
+	// 		return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+	// 	}
+	// 	return []byte(authHandler.server.Config.Auth.RefreshSecret), nil
+	// })
 
-	if err != nil {
-		return responses.ErrorResponse(c, http.StatusUnauthorized, err.Error())
-	}
+	// if err != nil {
+	// 	return responses.ErrorResponse(c, http.StatusUnauthorized, err.Error())
+	// }
 
-	claims, ok := token.Claims.(jwtGo.MapClaims)
-	if !ok && !token.Valid {
-		return responses.ErrorResponse(c, http.StatusUnauthorized, "Invalid token")
-	}
+	// claims, ok := token.Claims.(jwtGo.MapClaims)
+	// if !ok && !token.Valid {
+	// 	return responses.ErrorResponse(c, http.StatusUnauthorized, "Invalid token")
+	// }
 
-	user := new(models.User)
-	authHandler.server.DB.First(&user, int(claims["id"].(float64)))
+	// user := new(models.User)
+	// authHandler.server.DB.First(&user, int(claims["id"].(float64)))
 
-	if user.ID == 0 {
-		return responses.ErrorResponse(c, http.StatusUnauthorized, "User not found")
-	}
+	// if user.ID == 0 {
+	// 	return responses.ErrorResponse(c, http.StatusUnauthorized, "User not found")
+	// }
 
-	tokenService := tokenservice.NewTokenService(authHandler.server.Config)
-	accessToken, exp, err := tokenService.CreateAccessToken(user)
-	if err != nil {
-		return err
-	}
-	refreshToken, err := tokenService.CreateRefreshToken(user)
-	if err != nil {
-		return err
-	}
-	res := responses.NewLoginResponse(accessToken, refreshToken, exp)
+	// tokenService := tokenservice.NewTokenService(authHandler.server.Config)
+	// accessToken, exp, err := tokenService.CreateAccessToken(user)
+	// if err != nil {
+	// 	return err
+	// }
+	// refreshToken, err := tokenService.CreateRefreshToken(user)
+	// if err != nil {
+	// 	return err
+	// }
+	// res := responses.NewLoginResponse(accessToken, refreshToken, exp)
 
-	return responses.Response(c, http.StatusOK, res)
+	// return responses.Response(c, http.StatusOK, res)
 }

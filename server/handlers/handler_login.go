@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	m "PockitGolangBoilerplate/middleware"
 	s "PockitGolangBoilerplate/server"
 	"fmt"
 	"net/http"
@@ -28,18 +27,18 @@ func NewHandlerLogin(server *s.Server) *RegisterHandler {
 func (registerHandler *RegisterHandler) Login(c echo.Context) error {
 	fmt.Println("Register")
 
-	name := c.Param("name")
+	// name := c.Param("name")
 	// u, ok := storage.users[name]
-	u, ok := registerHandler.server.Sr.GetUsers()[name]
+	// u, ok := registerHandler.server.Sr.GetUsers()[name]
 
-	sess := m.SessionFromContext(c)
+	// sess := m.SessionFromContext(c)
 
 	var authenticator webauthn.Authenticator
-	if ok {
-		authenticator = registerHandler.server.WA.FinishLogin(c.Request(), c.Response(), u, webauthn.WrapMap(sess.Values))
-	} else {
-		authenticator = registerHandler.server.WA.FinishLogin(c.Request(), c.Response(), nil, webauthn.WrapMap(sess.Values))
-	}
+	// if ok {
+	// authenticator = registerHandler.server.WA.FinishLogin(c.Request(), c.Response(), u, webauthn.WrapMap(sess.Values))
+	// } else {
+	// authenticator = registerHandler.server.WA.FinishLogin(c.Request(), c.Response(), nil, webauthn.WrapMap(sess.Values))
+	// }
 	if authenticator == nil {
 		return nil
 	}
